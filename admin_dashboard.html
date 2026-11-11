@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title> 🏡Admin</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body class="dashboard-page admin-page">
+
+    <!-- NAVBAR -->
+    <nav class="dashboard-navbar">
+        <div class="navbar-inner">
+
+            <div class="admin-brand">
+                <span>🏡</span>
+                <h2>Property Connect</h2>
+            </div>
+
+            <a href="{{ url_for('logout') }}" class="logout-btn">
+                Logout
+            </a>
+
+        </div>
+    </nav>
+    <main class="dashboard-container">
+
+        <section class="dashboard-heading">
+            <h1>Welcome, {{ user['name'] }}!</h1>
+            <p>Manage the entire rental portal from here.</p>
+        </section>
+
+        <section class="dashboard-card admin-welcome">
+
+            <div class="welcome-icon">🏠</div>
+
+            <div class="welcome-text">
+                <h2>Admin Dashboard</h2>
+                <p>You are logged in as an Administrator.</p>
+            </div>
+
+        </section>
+
+        <section class="dashboard-card admin-section">
+
+            <h2 class="section-title">Administration</h2>
+
+            <div class="admin-grid">
+
+                <a href="{{ url_for('admin_section', section='users') }}"
+                   class="admin-feature">
+
+                    <span class="feature-icon">👥</span>
+                    <h3>Manage Users</h3>
+                    <p>Manage tenant and owner accounts.</p>
+                    <span class="feature-link"></span>
+
+                </a>
+
+                <a href="{{ url_for('admin_section', section='properties') }}"
+                   class="admin-feature">
+
+                    <span class="feature-icon">🏠</span>
+                    <h3>Manage Properties</h3>
+                    <p>View all rental properties.</p>
+                    <span class="feature-link"></span>
+
+                </a>
+
+                <a href="{{ url_for('admin_section', section='applications') }}"
+                   class="admin-feature">
+
+                    <span class="feature-icon">📋</span>
+                    <h3>Rental Applications</h3>
+                    <p>Monitor rental applications.</p>
+                    <span class="feature-link"></span>
+
+                </a>
+
+                <a href="{{ url_for('admin_section', section='payments') }}"
+                   class="admin-feature">
+
+                    <span class="feature-icon">💳</span>
+                    <h3>Manage Payments</h3>
+                    <p>Monitor rental payment details.</p>
+                    <span class="feature-link"></span>
+
+                </a>
+
+                <a href="{{ url_for('admin_section', section='complaints') }}"
+                   class="admin-feature">
+
+                    <span class="feature-icon">📝</span>
+                    <h3>Manage Complaints</h3>
+                    <p>View tenant complaints.</p>
+                    <span class="feature-link"></span>
+
+                </a>
+
+                <a href="{{ url_for('admin_section', section='reports') }}"
+                   class="admin-feature">
+
+                    <span class="feature-icon">📊</span>
+                    <h3>View Reports</h3>
+                    <p>View rental portal summary.</p>
+                    <span class="feature-link"></span>
+
+                </a>
+
+            </div>
+
+        </section>
+
+        <footer class="admin-footer">
+            <p>© 2026 Property Connect | Admin Panel</p>
+        </footer>
+
+    </main>
+
+</body>
+</html>

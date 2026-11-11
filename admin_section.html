@@ -1,0 +1,116 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🏡Admin</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body class="dashboard-page admin-page">
+
+    <nav class="dashboard-navbar">
+        <div class="navbar-inner">
+            <div class="admin-brand">
+                <span>🏡</span>
+                <h2>Property Connect</h2>
+            </div>
+
+            <a href="{{ url_for('dashboard') }}" class="logout-btn">
+                Dashboard
+            </a>
+        </div>
+    </nav>
+
+    <main class="dashboard-container">
+
+        <section class="dashboard-card">
+            <h2>{{ section|title }}</h2>
+
+            {% if records %}
+
+                {% if section == "reports" %}
+
+                    {% for row in records %}
+                        <div class="admin-grid">
+                            <div class="admin-feature">
+                                <h3>Total Owners</h3>
+                                <p>{{ row['total_owners'] }}</p>
+                            </div>
+
+                            <div class="admin-feature">
+                                <h3>Total Tenants</h3>
+                                <p>{{ row['total_tenants'] }}</p>
+                            </div>
+
+                            <div class="admin-feature">
+                                <h3>Total Properties</h3>
+                                <p>{{ row['total_properties'] }}</p>
+                            </div>
+
+                            <div class="admin-feature">
+                                <h3>Total Applications</h3>
+                                <p>{{ row['total_applications'] }}</p>
+                            </div>
+
+                            <div class="admin-feature">
+                                <h3>Total Payments</h3>
+                                <p>{{ row['total_payments'] }}</p>
+                            </div>
+
+                            <div class="admin-feature">
+                                <h3>Total Complaints</h3>
+                                <p>{{ row['total_complaints'] }}</p>
+                            </div>
+                        </div>
+                    {% endfor %}
+
+                {% else %}
+
+                    <div style="overflow-x:auto;">
+                        <table style="width:100%; border-collapse:collapse;">
+                            <thead>
+                                <tr>
+                                    {% for key in records[0].keys() %}
+                                        <th style="padding:12px; background:#174C3C; color:white; text-align:left;">
+                                            {{ key|replace('_', ' ')|title }}
+                                        </th>
+                                    {% endfor %}
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                {% for row in records %}
+                                    <tr>
+                                        {% for key in row.keys() %}
+                                            <td style="padding:12px; border-bottom:1px solid #ddd;">
+                                                {{ row[key] if row[key] is not none else '-' }}
+                                            </td>
+                                        {% endfor %}
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+
+                {% endif %}
+
+            {% else %}
+                <p>No {{ section }} records found.</p>
+            {% endif %}
+
+            <p style="margin-top:25px;">
+                <a href="{{ url_for('dashboard') }}"
+                   style="color:#174C3C; font-weight:bold; text-decoration:none;">
+                    ← Back to Admin Dashboard
+                </a>
+            </p>
+        </section>
+
+    </main>
+
+</body>
+</html>

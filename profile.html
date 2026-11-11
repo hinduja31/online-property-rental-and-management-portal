@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🏡My Profile</title>
+
+    <style>
+        :root {
+            --forest: #234b3a;
+            --forest-dark: #183629;
+            --cream: #f7f3e9;
+            --gold: #c6a45b;
+            --text: #26352c;
+            --muted: #6d796f;
+            --white: #ffffff;
+            --border: #e4e6dc;
+            --danger: #a33d35;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: var(--cream);
+            color: var(--text);
+        }
+
+        .navbar {
+            background: var(--forest);
+            color: var(--white);
+            padding: 18px 7%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .brand {
+            font-size: 23px;
+            font-weight: bold;
+            color: var(--white);
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 18px;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a {
+            color: var(--white);
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .nav-links a:hover {
+            color: var(--gold);
+        }
+
+        .container {
+            width: min(1050px, 92%);
+            margin: 35px auto;
+        }
+
+        .page-heading {
+            margin-bottom: 24px;
+        }
+
+        .page-heading h1 {
+            margin: 0 0 8px;
+            color: var(--forest);
+        }
+
+        .page-heading p {
+            color: var(--muted);
+            margin: 0;
+        }
+
+        .card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 25px;
+            margin-bottom: 24px;
+            box-shadow: 0 5px 18px rgba(25, 55, 38, 0.05);
+        }
+
+        .profile-top {
+            display: flex;
+            align-items: center;
+            gap: 22px;
+            flex-wrap: wrap;
+            margin-bottom: 24px;
+        }
+
+        .profile-image {
+            width: 105px;
+            height: 105px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid var(--cream);
+            background: var(--cream);
+        }
+
+        .profile-placeholder {
+            width: 105px;
+            height: 105px;
+            border-radius: 50%;
+            background: var(--forest);
+            color: var(--white);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 38px;
+            font-weight: bold;
+            border: 4px solid var(--cream);
+        }
+
+        .profile-top h2 {
+            color: var(--forest);
+            margin: 0 0 8px;
+        }
+
+        .role-label {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            background: #f5edda;
+            color: #7d6327;
+            font-size: 12px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 18px;
+        }
+
+        .detail-item {
+            padding: 13px 15px;
+            background: #fafaf6;
+            border: 1px solid var(--border);
+            border-radius: 9px;
+            overflow-wrap: anywhere;
+        }
+
+        .detail-label {
+            display: block;
+            color: var(--muted);
+            font-size: 12px;
+            margin-bottom: 7px;
+        }
+
+        .detail-value {
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        .section-heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .section-heading h2 {
+            margin: 0;
+            color: var(--forest);
+        }
+
+        .button {
+            display: inline-block;
+            border: none;
+            border-radius: 8px;
+            padding: 11px 17px;
+            background: var(--forest);
+            color: var(--white);
+            font-size: 14px;
+            font-weight: bold;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .button:hover {
+            background: var(--forest-dark);
+        }
+
+        .button-gold {
+            background: var(--gold);
+            color: #1e2e23;
+        }
+
+        .button-gold:hover {
+            background: #b39145;
+        }
+
+        .button-danger {
+            background: var(--danger);
+        }
+
+        .button-danger:hover {
+            background: #812d27;
+        }
+
+        .flash-message {
+            padding: 13px 16px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+
+        .flash-success {
+            background: #e7f4e9;
+            color: #245b31;
+            border: 1px solid #c6e4cc;
+        }
+
+        .flash-error {
+            background: #fae9e7;
+            color: #8d2e27;
+            border: 1px solid #edc9c5;
+        }
+
+        .upload-form {
+            display: grid;
+            grid-template-columns: 1fr 1.4fr auto;
+            gap: 14px;
+            align-items: end;
+            padding: 18px;
+            background: #fafaf6;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            margin-bottom: 22px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 13px;
+            font-weight: bold;
+            color: var(--forest);
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            min-height: 43px;
+            border: 1px solid #d7dbd0;
+            border-radius: 7px;
+            padding: 10px;
+            font-size: 14px;
+            background: var(--white);
+        }
+
+        .helper-text {
+            color: var(--muted);
+            font-size: 12px;
+            margin: 10px 0 0;
+        }
+
+        .document-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .document-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+            padding: 15px;
+            border: 1px solid var(--border);
+            border-radius: 9px;
+            flex-wrap: wrap;
+        }
+
+        .document-info {
+            min-width: 0;
+        }
+
+        .document-info strong {
+            display: block;
+            color: var(--forest);
+            margin-bottom: 5px;
+            overflow-wrap: anywhere;
+        }
+
+        .document-info span {
+            display: block;
+            color: var(--muted);
+            font-size: 12px;
+            margin-top: 4px;
+        }
+
+        .document-actions {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .document-actions form {
+            margin: 0;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 25px 15px;
+            color: var(--muted);
+            background: #fafaf6;
+            border-radius: 9px;
+            border: 1px dashed #d7dbd0;
+        }
+
+        .small-button {
+            padding: 9px 12px;
+            font-size: 12px;
+        }
+
+        @media (max-width: 700px) {
+            .details-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .upload-form {
+                grid-template-columns: 1fr;
+            }
+
+            .card {
+                padding: 18px;
+            }
+
+            .navbar {
+                padding: 16px 5%;
+            }
+
+            .document-row {
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="navbar">
+        <a class="brand" href="{{ url_for('dashboard') }}">Property Connect</a>
+
+        <div class="nav-links">
+            <a href="{{ url_for('dashboard') }}">Dashboard</a>
+            {% if user['role'] == 'tenant' %}
+                <a href="{{ url_for('view_properties') }}">Browse Properties</a>
+            {% endif %}
+            <a href="{{ url_for('edit_profile') }}">Edit Profile</a>
+            <a href="{{ url_for('logout') }}">Logout</a>
+        </div>
+    </nav>
+
+    <main class="container">
+
+        <div class="page-heading">
+            <h1>My Profile</h1>
+            <p>View and manage your Property Connect account details.</p>
+        </div>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash-message
+                        {% if category == 'success' %}
+                            flash-success
+                        {% else %}
+                            flash-error
+                        {% endif %}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <section class="card">
+
+            <div class="profile-top">
+                {% if user['profile_image'] %}
+                    <img
+                        class="profile-image"
+                        src="{{ url_for('static', filename='uploads/profiles/' + user['profile_image']) }}"
+                        alt="Profile photo"
+                    >
+                {% else %}
+                    <div class="profile-placeholder">
+                        {{ user['name'][0]|upper if user['name'] else 'U' }}
+                    </div>
+                {% endif %}
+
+                <div>
+                    <h2>{{ user['name'] }}</h2>
+                    <span class="role-label">{{ user['role'] }}</span>
+                </div>
+            </div>
+
+            <div class="details-grid">
+                <div class="detail-item">
+                    <span class="detail-label">Email Address</span>
+                    <div class="detail-value">{{ user['email'] or 'Not provided' }}</div>
+                </div>
+
+                <div class="detail-item">
+                    <span class="detail-label">Mobile Number</span>
+                    <div class="detail-value">{{ user['mobile'] or 'Not provided' }}</div>
+                </div>
+
+                <div class="detail-item">
+                    <span class="detail-label">Date of Birth</span>
+                    <div class="detail-value">{{ user['date_of_birth'] or 'Not provided' }}</div>
+                </div>
+
+                <div class="detail-item">
+                    <span class="detail-label">Gender</span>
+                    <div class="detail-value">{{ user['gender'] or 'Not provided' }}</div>
+                </div>
+
+                <div class="detail-item">
+                    <span class="detail-label">Address</span>
+                    <div class="detail-value">{{ user['address'] or 'Not provided' }}</div>
+                </div>
+
+                <div class="detail-item">
+                    <span class="detail-label">City</span>
+                    <div class="detail-value">{{ user['city'] or 'Not provided' }}</div>
+                </div>
+
+                <div class="detail-item">
+                    <span class="detail-label">State</span>
+                    <div class="detail-value">{{ user['state'] or 'Not provided' }}</div>
+                </div>
+
+                <div class="detail-item">
+                    <span class="detail-label">Pincode</span>
+                    <div class="detail-value">{{ user['pincode'] or 'Not provided' }}</div>
+                </div>
+            </div>
+
+            <div style="margin-top: 22px;">
+                <a class="button button-gold" href="{{ url_for('edit_profile') }}">
+                    Edit Profile
+                </a>
+            </div>
+
+        </section>
+
+        {% if user['role'] == 'tenant' %}
+
+            <section class="card">
+
+                <div class="section-heading">
+                    <h2>My Documents</h2>
+                </div>
+
+                <form
+                    class="upload-form"
+                    action="{{ url_for('upload_tenant_document') }}"
+                    method="POST"
+                    enctype="multipart/form-data"
+                >
+                    <div class="form-group">
+                        <label for="document_type">Document Type</label>
+
+                        <select id="document_type" name="document_type" required>
+                            <option value="">Choose document type</option>
+
+                            {% for doc_type in document_types %}
+                                <option value="{{ doc_type }}">{{ doc_type }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="document">Choose Document</label>
+
+                        <input
+                            type="file"
+                            id="document"
+                            name="document"
+                            accept=".pdf,.jpg,.jpeg,.png,.webp"
+                            required
+                        >
+                    </div>
+
+                    <button class="button" type="submit">
+                        Upload Document
+                    </button>
+                </form>
+
+                <p class="helper-text">
+                    Accepted formats: PDF, JPG, JPEG, PNG, WEBP. Maximum file size: 5 MB.
+                </p>
+
+                <div style="margin-top: 22px;">
+                    {% if documents %}
+                        <div class="document-list">
+
+                            {% for document in documents %}
+                                <div class="document-row">
+
+                                    <div class="document-info">
+                                        <strong>{{ document['original_filename'] }}</strong>
+                                        <span>Type: {{ document['document_type'] }}</span>
+                                        <span>Uploaded: {{ document['uploaded_at'] }}</span>
+                                    </div>
+
+                                    <div class="document-actions">
+                                        <a
+                                            class="button small-button"
+                                            href="{{ url_for('download_tenant_document', document_id=document['id']) }}"
+                                        >
+                                            Download
+                                        </a>
+
+                                        <form
+                                            action="{{ url_for('delete_tenant_document', document_id=document['id']) }}"
+                                            method="POST"
+                                            onsubmit="return confirm('Delete this document?');"
+                                        >
+                                            <button
+                                                class="button button-danger small-button"
+                                                type="submit"
+                                            >
+                                                Delete
+                                            </button>
+                                        </form>
+                                    </div>
+
+                                </div>
+                            {% endfor %}
+
+                        </div>
+                    {% else %}
+                        <div class="empty-state">
+                            No documents uploaded yet. Upload your documents using the form above.
+                        </div>
+                    {% endif %}
+                </div>
+
+            </section>
+
+        {% endif %}
+
+    </main>
+
+</body>
+</html>

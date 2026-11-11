@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🏡Edit Property</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 30px 15px;
+            font-family: Arial, sans-serif;
+            background: #f3f5f9;
+            color: #243b64;
+        }
+
+        .edit-container {
+            max-width: 700px;
+            margin: 30px auto;
+            padding: 30px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        h2 {
+            text-align: center;
+            color: #243b64;
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin: 14px 0 6px;
+            font-weight: bold;
+        }
+
+        input,
+        textarea,
+        select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 15px;
+            background: white;
+        }
+
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .help-text {
+            display: block;
+            margin-top: 7px;
+            color: #666;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .photo-section {
+            margin-top: 25px;
+        }
+
+        .photo-section h3 {
+            margin-bottom: 12px;
+            color: #243b64;
+        }
+
+        .photo-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 12px;
+            margin-top: 12px;
+        }
+
+        .photo-card {
+            overflow: hidden;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            background: #f8fafc;
+        }
+
+        .property-photo {
+            display: block;
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+        }
+
+        .no-photos {
+            color: #777;
+            font-size: 14px;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        .save-btn,
+        .back-btn {
+            display: inline-block;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 6px;
+            text-decoration: none;
+            cursor: pointer;
+            font-size: 15px;
+            text-align: center;
+        }
+
+        .save-btn {
+            background: #2563eb;
+            color: white;
+        }
+
+        .save-btn:hover {
+            background: #1d4ed8;
+        }
+
+        .back-btn {
+            background: #64748b;
+            color: white;
+        }
+
+        .back-btn:hover {
+            background: #475569;
+        }
+
+        .flash-message {
+            margin-bottom: 18px;
+            padding: 12px 15px;
+            border-radius: 6px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .flash-message.success {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .flash-message.error {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        @media (max-width: 500px) {
+            .edit-container {
+                padding: 20px;
+            }
+
+            .photo-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .property-photo {
+                height: 200px;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            .save-btn,
+            .back-btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="edit-container">
+
+        <h2>Edit Property</h2>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+
+            {% if messages %}
+
+                {% for category, message in messages %}
+
+                    <div class="flash-message {{ category }}">
+                        {{ message }}
+                    </div>
+
+                {% endfor %}
+
+            {% endif %}
+
+        {% endwith %}
+
+
+        <form method="POST"
+              enctype="multipart/form-data">
+
+            <label for="title">Property Title</label>
+
+            <input type="text"
+                   id="title"
+                   name="title"
+                   value="{{ property.title }}"
+                   required>
+
+
+            <label for="description">Description</label>
+
+            <textarea id="description"
+                      name="description">{{ property.description or '' }}</textarea>
+
+
+            <label for="location">Location</label>
+
+            <input type="text"
+                   id="location"
+                   name="location"
+                   value="{{ property.location }}"
+                   required>
+
+
+            <label for="property_type">Property Type</label>
+
+            <select id="property_type"
+                    name="property_type"
+                    required>
+
+                <option value="House"
+                    {% if property.property_type == 'House' %}selected{% endif %}>
+                    House
+                </option>
+
+                <option value="Apartment"
+                    {% if property.property_type == 'Apartment' %}selected{% endif %}>
+                    Apartment
+                </option>
+
+                <option value="Villa"
+                    {% if property.property_type == 'Villa' %}selected{% endif %}>
+                    Villa
+                </option>
+
+                <option value="Room"
+                    {% if property.property_type == 'Room' %}selected{% endif %}>
+                    Room
+                </option>
+
+                <option value="PG"
+                    {% if property.property_type == 'PG' %}selected{% endif %}>
+                    PG
+                </option>
+
+                <option value="Commercial"
+                    {% if property.property_type == 'Commercial' %}selected{% endif %}>
+                    Commercial
+                </option>
+
+            </select>
+
+
+            <label for="rent">Monthly Rent (₹)</label>
+
+            <input type="number"
+                   id="rent"
+                   name="rent"
+                   min="1"
+                   step="0.01"
+                   value="{{ property.rent }}"
+                   required>
+
+
+            <label for="bedrooms">Bedrooms</label>
+
+            <input type="number"
+                   id="bedrooms"
+                   name="bedrooms"
+                   min="0"
+                   value="{{ property.bedrooms or 0 }}">
+                   <div class="photo-section">
+
+                <h3>Current Property Photos</h3>
+
+                {% if property.images %}
+
+                    <div class="photo-grid">
+
+                        {% for image in property.images %}
+
+                            <div class="photo-card">
+
+                                <img
+                                    src="{{ url_for('static', filename='uploads/properties/' ~ image) }}"
+                                    alt="Property photo"
+                                    class="property-photo"
+                                    loading="lazy">
+
+                            </div>
+
+                        {% endfor %}
+
+                    </div>
+
+                {% else %}
+
+                    <p class="no-photos">
+                        No photos uploaded for this property yet.
+                    </p>
+
+                {% endif %}
+
+            </div>
+
+
+            <label for="images">Add More Property Photos</label>
+
+            <input type="file"
+                   id="images"
+                   name="images"
+                   accept=".jpg,.jpeg,.png,.webp"
+                   multiple>
+
+            <small class="help-text">
+                Select additional photos to add. Existing photos will remain.
+                Supported formats: JPG, JPEG, PNG and WEBP.
+            </small>
+
+
+            <div class="button-group">
+
+                <button type="submit" class="save-btn">
+                    Save Changes
+                </button>
+
+                <a href="{{ url_for('owner_properties') }}"
+                   class="back-btn">
+                    Cancel
+                </a>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,75 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>🏡User Login</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+    <div class="brand">🏡 Property Connect</div>
+    <p class="tagline"> Find · Rent · Manage </p>
+
+    <form method="POST" class="login-card">
+
+        <h2>Login to Your Account</h2>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% for category, message in messages %}
+                <p class="{{ category }}">{{ message }}</p>
+            {% endfor %}
+        {% endwith %}
+
+        <input
+            type="email"
+            name="email"
+            placeholder="Enter Email"
+            required
+        >
+        <div class="password-box">
+
+            <input
+                type="password"
+                id="loginPassword"
+                name="password"
+                placeholder="Enter Password"
+                required
+            >
+
+            <span
+                class="eye-icon"
+                onclick="togglePassword()"
+                title="Show Password"
+            >👁</span>
+
+        </div>
+
+        <button type="submit" class="login-button">
+            Login
+        </button>
+
+        <p>Don't have an account?</p>
+
+        <a href="{{ url_for('register') }}">
+            Create Account
+        </a>
+
+    </form>
+
+    <script>
+        function togglePassword() {
+            const password = document.getElementById("loginPassword");
+
+            if (password.type === "password") {
+                password.type = "text";
+            } else {
+                password.type = "password";
+            }
+        }
+    </script>
+
+</body>
+</html>

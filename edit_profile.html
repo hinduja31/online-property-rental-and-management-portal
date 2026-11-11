@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🏡Edit Profile</title>
+
+    <style>
+        :root {
+            --forest: #234b3a;
+            --forest-dark: #183629;
+            --cream: #f7f3e9;
+            --gold: #c6a45b;
+            --text: #26352c;
+            --muted: #6d796f;
+            --white: #ffffff;
+            --border: #e4e6dc;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: var(--cream);
+            color: var(--text);
+        }
+
+        .navbar {
+            background: var(--forest);
+            color: var(--white);
+            padding: 18px 7%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .brand {
+            font-size: 23px;
+            font-weight: bold;
+            color: var(--white);
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 18px;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a {
+            color: var(--white);
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .nav-links a:hover {
+            color: var(--gold);
+        }
+
+        .container {
+            width: min(900px, 92%);
+            margin: 35px auto;
+        }
+
+        .heading {
+            margin-bottom: 22px;
+        }
+
+        .heading h1 {
+            margin: 0 0 8px;
+            color: var(--forest);
+        }
+
+        .heading p {
+            margin: 0;
+            color: var(--muted);
+        }
+
+        .card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 28px;
+            box-shadow: 0 5px 18px rgba(25, 55, 38, 0.05);
+        }
+
+        .flash-message {
+            padding: 13px 16px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+
+        .flash-success {
+            background: #e7f4e9;
+            color: #245b31;
+            border: 1px solid #c6e4cc;
+        }
+
+        .flash-error {
+            background: #fae9e7;
+            color: #8d2e27;
+            border: 1px solid #edc9c5;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 18px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        label {
+            color: var(--forest);
+            font-size: 13px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            border: 1px solid #d7dbd0;
+            border-radius: 7px;
+            padding: 12px;
+            font-size: 14px;
+            font-family: Arial, sans-serif;
+            background: var(--white);
+            color: var(--text);
+        }
+
+        input,
+        select {
+            min-height: 44px;
+        }
+
+        textarea {
+            min-height: 95px;
+            resize: vertical;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            outline: 2px solid rgba(198, 164, 91, 0.35);
+            border-color: var(--gold);
+        }
+
+        .current-photo {
+            width: 95px;
+            height: 95px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid var(--cream);
+            margin-bottom: 12px;
+        }
+
+        .help-text {
+            color: var(--muted);
+            font-size: 12px;
+            margin-top: 7px;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 25px;
+            flex-wrap: wrap;
+        }
+
+        .button {
+            display: inline-block;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 19px;
+            background: var(--forest);
+            color: var(--white);
+            font-size: 14px;
+            font-weight: bold;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .button:hover {
+            background: var(--forest-dark);
+        }
+
+        .button-gold {
+            background: var(--gold);
+            color: #1e2e23;
+        }
+
+        .button-gold:hover {
+            background: #b39145;
+        }
+
+        @media (max-width: 650px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-group.full-width {
+                grid-column: auto;
+            }
+
+            .card {
+                padding: 19px;
+            }
+
+            .navbar {
+                padding: 16px 5%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="navbar">
+        <a class="brand" href="{{ url_for('dashboard') }}">Property Connect</a>
+
+        <div class="nav-links">
+            <a href="{{ url_for('dashboard') }}">Dashboard</a>
+            <a href="{{ url_for('profile') }}">My Profile</a>
+            <a href="{{ url_for('logout') }}">Logout</a>
+        </div>
+    </nav>
+
+    <main class="container">
+
+        <div class="heading">
+            <h1>Edit Profile</h1>
+            <p>Update your personal information below.</p>
+        </div>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash-message
+                        {% if category == 'success' %}
+                            flash-success
+                        {% else %}
+                            flash-error
+                        {% endif %}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <section class="card">
+
+            <form
+                action="{{ url_for('edit_profile') }}"
+                method="POST"
+                enctype="multipart/form-data"
+            >
+
+                <div class="form-grid">
+
+                    <div class="form-group full-width">
+                        <label for="name">Full Name *</label>
+                        <input
+                            type="text"
+                            id="name"
+                            name="name"
+                            value="{{ user['name'] or '' }}"
+                            required
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input
+                            type="email"
+                            id="email"
+                            value="{{ user['email'] or '' }}"
+                            readonly
+                        >
+                        <span class="help-text">
+                            Email address cannot be changed here.
+                        </span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="mobile">Mobile Number</label>
+                        <input
+                            type="text"
+                            id="mobile"
+                            name="mobile"
+                            value="{{ user['mobile'] or '' }}"
+                            maxlength="10"
+                            inputmode="numeric"
+                            pattern="[0-9]{10}"
+                            title="Enter a valid 10 digit mobile number"
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="date_of_birth">Date of Birth</label>
+                        <input
+                            type="date"
+                            id="date_of_birth"
+                            name="date_of_birth"
+                            value="{{ user['date_of_birth'] or '' }}"
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="gender">Gender</label>
+                        <select id="gender" name="gender">
+                            <option value="">Select Gender</option>
+
+                            <option
+                                value="Male"
+                                {% if user['gender'] == 'Male' %}selected{% endif %}
+                            >
+                                Male
+                            </option>
+
+                            <option
+                                value="Female"
+                                {% if user['gender'] == 'Female' %}selected{% endif %}
+                            >
+                                Female
+                            </option>
+
+                            <option
+                                value="Other"
+                                {% if user['gender'] == 'Other' %}selected{% endif %}
+                            >
+                                Other
+                            </option>
+                        </select>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label for="address">Address</label>
+                        <textarea
+                            id="address"
+                            name="address"
+                        >{{ user['address'] or '' }}</textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="city">City</label>
+                        <input
+                            type="text"
+                            id="city"
+                            name="city"
+                            value="{{ user['city'] or '' }}"
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="state">State</label>
+                        <input
+                            type="text"
+                            id="state"
+                            name="state"
+                            value="{{ user['state'] or '' }}"
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="pincode">Pincode</label>
+                        <input
+                            type="text"
+                            id="pincode"
+                            name="pincode"
+                            value="{{ user['pincode'] or '' }}"
+                            maxlength="6"
+                            inputmode="numeric"
+                            pattern="[0-9]{6}"
+                            title="Enter a valid 6 digit pincode"
+                        >
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label for="profile_photo">Profile Photo</label>
+
+                        {% if user['profile_image'] %}
+                            <img
+                                class="current-photo"
+                                src="{{ url_for('static', filename='uploads/profiles/' + user['profile_image']) }}"
+                                alt="Current profile photo"
+                            >
+                        {% endif %}
+
+                        <input
+                            type="file"
+                            id="profile_photo"
+                            name="profile_photo"
+                            accept=".jpg,.jpeg,.png,.webp"
+                        >
+
+                        <span class="help-text">
+                            Accepted formats: JPG, JPEG, PNG, WEBP. Maximum size: 5 MB.
+                        </span>
+                    </div>
+
+                </div>
+
+                <div class="buttons">
+                    <button class="button button-gold" type="submit">
+                        Save Changes
+                    </button>
+
+                    <a class="button" href="{{ url_for('profile') }}">
+                        Cancel
+                    </a>
+                </div>
+
+            </form>
+
+        </section>
+
+    </main>
+
+</body>
+</html>

@@ -1,0 +1,993 @@
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: "Segoe UI", sans-serif;
+    background: #F5F1E8;
+    margin: 0;
+    padding: 50px;
+    text-align: center;
+}
+
+h1, h2 {
+    color: #174C3C;
+    text-align: center;
+}
+
+h1 {
+    font-size: 28px;
+}
+
+h2 {
+    font-size: 18px;
+}
+button {
+    width: 100%;
+    padding: 16px;
+    background: #174C3C;
+    color: white;
+    border: 2px solid #C99B55;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    background: #C99B55;
+}
+input, select, textarea {
+    width: 100%;
+    padding: 10px;
+    margin: 8px 0;
+    border: 1px solid #D8C8A8;
+    border-radius: 7px;
+    outline: none;
+    font-family: inherit;
+}
+
+input, select {
+    height: 45px;
+}
+
+textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    border-color: #174C3C;
+}
+
+input[type="checkbox"] {
+    width: auto;
+    height: auto;
+    margin: 0 5px;
+}
+
+form {
+    width: 450px;
+    max-width: 90%;
+    margin: 25px auto;
+    padding: 30px;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 4px 20px #00000015;
+}
+
+.login-card {
+    width: 500px;
+    max-width: 95%;
+    margin: 25px auto;
+    padding: 40px;
+    background: white;
+    border-radius: 18px;
+    line-height: 1.6;
+}
+
+.login-card h2 {
+    font-size: 22px;
+    margin-bottom: 25px;
+}
+
+.login-card p {
+    text-align: center;
+    margin-bottom: 5px;
+}
+
+.login-card > a {
+    display: block;
+    text-align: center;
+    color: #C99B55;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.login-card > button[type="submit"] {
+    margin-top: 18px;
+}
+
+.login-card input:not([type="checkbox"]) {
+    margin-bottom: 15px;
+}
+
+.login-links {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.login-links label {
+    display: flex;
+    align-items: center;
+}
+
+.login-links a {
+    color: #174C3C;
+    text-decoration: none;
+}
+
+.login-links a:hover {
+    color: #C99B55;
+}
+.register-card {
+    width: 520px;
+    max-width: 95%;
+    margin: 25px auto;
+    padding: 35px;
+    background: white;
+    border-radius: 18px;
+}
+
+.register-card h1 {
+    margin-bottom: 30px;
+}
+
+.register-card input,
+.register-card select {
+    margin-bottom: 15px;
+}
+
+.register-login {
+    text-align: center;
+    margin-top: 18px;
+}
+
+.register-login a {
+    color: #174C3C;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.password-wrapper,
+.password-box {
+    position: relative;
+    width: 100%;
+    margin: 8px 0 15px;
+}
+.password-wrapper input,
+.password-box input {
+    display: block;
+    width: 100%;
+    height: 45px;
+    padding: 10px 50px 10px 12px;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.password-wrapper button.eye-toggle,
+.password-box button.eye-toggle,
+.password-wrapper button[type="button"],
+.password-box button[type="button"] {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+
+    width: 32px !important;
+    min-width: 32px;
+    height: 32px !important;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0 !important;
+    margin: 0 !important;
+
+    background: transparent !important;
+    color: #174C3C !important;
+
+    border: none !important;
+    border-radius: 50%;
+
+    font-size: 18px;
+    line-height: 1;
+
+    cursor: pointer;
+    z-index: 10;
+}
+
+.password-wrapper button.eye-toggle:hover,
+.password-box button.eye-toggle:hover,
+.password-wrapper button[type="button"]:hover,
+.password-box button[type="button"]:hover {
+    background: #F5F1E8 !important;
+}
+
+.login-card .password-box .eye-icon {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+
+    width: 30px;
+    height: 30px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: #174C3C;
+    font-size: 18px;
+    cursor: pointer;
+    z-index: 10;
+}
+
+.brand {
+    color: #174C3C;
+    font-size: 32px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.tagline {
+    text-align: center;
+    color: #C99B55;
+    font-size: 19px;
+}
+
+body.dashboard-page {
+    display: block;
+    text-align: left;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    background: #F5F1E8;
+}
+
+.dashboard-navbar {
+    width: 100%;
+    min-height: 75px;
+    padding: 15px 5%;
+    background: #174C3C;
+    color: white;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.dashboard-navbar h2 {
+    color: white;
+    text-align: left;
+    margin: 0;
+}
+
+.logout-btn {
+    display: inline-block;
+    background: #C99B55;
+    color: white !important;
+    padding: 12px 24px;
+    border-radius: 7px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.logout-btn:hover {
+    background: #B98535;
+}
+.owner-layout {
+    display: flex;
+    width: 100%;
+    min-height: calc(100vh - 75px);
+}
+
+.dashboard-sidebar {
+    width: 240px;
+    min-width: 240px;
+    background: #174C3C;
+    padding: 25px 15px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.sidebar-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px;
+    color: white !important;
+    text-decoration: none;
+    border-radius: 8px;
+    transition: 0.2s;
+}
+
+.sidebar-link:hover,
+.sidebar-link.active {
+    background: #28634F;
+}
+.owner-main {
+    flex: 1;
+    min-width: 0;
+}
+
+.owner-main .dashboard-container {
+    width: 90%;
+    max-width: 1100px;
+    margin: 35px auto;
+    padding: 20px;
+}
+
+.dashboard-container h1 {
+    text-align: left;
+    color: #174C3C;
+    margin-bottom: 10px;
+}
+
+.dashboard-container > p {
+    text-align: left;
+}
+
+.dashboard-card {
+    background: white;
+    padding: 25px;
+    margin-top: 25px;
+    border-radius: 12px;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.10);
+}
+
+.dashboard-card h2 {
+    text-align: left;
+    color: #174C3C;
+    margin-top: 0;
+}
+
+.dashboard-card p {
+    padding: 12px;
+    margin: 8px 0;
+    background: #F5F1E8;
+    border-radius: 6px;
+    text-align: left;
+}
+
+.owner-navbar {
+    width: 100%;
+    height: 65px;
+    background: #174C3C;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    position: relative;
+    padding: 0 25px;
+    z-index: 100;
+}
+
+.navbar-logo {
+    color: white;
+    font-size: 23px;
+    font-weight: bold;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+}
+
+.menu-container {
+    position: absolute;
+    right: 25px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.menu-button {
+    background: transparent;
+    color: white;
+    border: none;
+    font-size: 30px;
+    cursor: pointer;
+    width: auto;
+    padding: 0;
+}
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 42px;
+    width: 150px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 100;
+    overflow: hidden;
+}
+
+.dropdown-menu.show {
+    display: block;
+}
+
+.dropdown-menu a {
+    display: block;
+    padding: 12px;
+    color: #174C3C;
+    text-decoration: none;
+}
+
+.dropdown-menu a:hover {
+    background: #F5F1E8;
+}
+
+.owner-content {
+    width: 90%;
+    max-width: 1200px;
+    margin: 30px auto;
+    padding: 0;
+}
+
+.owner-content > h1,
+.owner-content > p {
+    text-align: left;
+}
+
+.owner-banner {
+    width: 100%;
+    height: 300px;
+    margin: 30px 0;
+    border-radius: 14px;
+
+    background-image:
+        url("https://i.pinimg.com/236x/01/45/eb/0145eb418e7795f352328e9780b8bdc3.jpg?nii=t");
+
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.owner-banner h2 {
+    color: #174C3C;
+    text-align: center;
+}
+
+.owner-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 22px;
+    width: 100%;
+}
+
+.owner-card {
+    min-height: 145px;
+    background: white;
+    border: 1px solid #E5DDCE;
+    border-radius: 12px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+    padding: 18px;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.owner-card:hover {
+    transform: translateY(-4px);
+    border-color: #C99B55;
+}
+
+.owner-card span {
+    font-size: 32px;
+    margin-bottom: 10px;
+}
+
+.owner-card h3 {
+    color: #174C3C;
+    margin: 0;
+    font-size: 17px;
+}
+.feature-content {
+    width: 100%;
+    margin-top: 25px;
+    padding: 25px;
+    background: white;
+    border-radius: 12px;
+}
+body.tenant-dashboard {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    font-family: "Segoe UI", sans-serif;
+
+    background-image:
+        linear-gradient(
+            rgba(0, 0, 0, 0.25),
+            rgba(0, 0, 0, 0.25)
+        ),
+        url("https://i.pinimg.com/236x/01/45/eb/0145eb418e7795f352328e9780b8bdc3.jpg?nii=t");
+
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+
+    text-align: left;
+}
+
+.tenant-dashboard .owner-navbar {
+    background: rgba(23, 76, 60, 0.95);
+}
+
+.tenant-dashboard .owner-content {
+    width: 90%;
+    max-width: 1200px;
+    margin: 30px auto;
+}
+
+.tenant-dashboard .owner-content h1,
+.tenant-dashboard .owner-content h2,
+.tenant-dashboard .owner-content p {
+    color: white;
+}
+
+.tenant-dashboard .owner-banner {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(5px);
+}
+
+.tenant-dashboard .owner-card {
+    background: rgba(255, 255, 255, 0.88);
+    backdrop-filter: blur(7px);
+    border: 1px solid rgba(255, 255, 255, 0.7);
+    box-shadow: 0 5px 18px rgba(0, 0, 0, 0.15);
+}
+
+.tenant-dashboard .owner-card h3 {
+    color: #174C3C;
+}
+
+.tenant-dashboard .owner-card:hover {
+    background: rgba(255, 255, 255, 0.97);
+    transform: translateY(-5px);
+}
+
+.tenant-dashboard .feature-content {
+    background: rgba(255, 255, 255, 0.91);
+    backdrop-filter: blur(7px);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+}
+
+body.dashboard-page.admin-page {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    font-family: "Segoe UI", sans-serif;
+    text-align: left;
+
+    background-image:
+        linear-gradient(
+            rgba(10, 38, 35, 0.45),
+            rgba(10, 38, 35, 0.55)
+        ),
+        url("https://i.pinimg.com/236x/c3/6e/67/c36e67f2279732e8eabdbbbafd4ffc04.jpg?nii=t");
+
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+.admin-page .dashboard-navbar {
+    width: 100%;
+    min-height: 80px;
+    padding: 0;
+    background: #174C3C;
+}
+
+.admin-page .navbar-inner {
+    width: 92%;
+    max-width: 1450px;
+    min-height: 80px;
+    margin: auto;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.admin-page .admin-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.admin-page .admin-brand span {
+    font-size: 30px;
+}
+
+.admin-page .admin-brand h2 {
+    color: white;
+    font-size: 25px;
+    margin: 0;
+    text-align: left;
+}
+
+.admin-page .logout-btn {
+    background: #D5A34F;
+    color: white;
+    padding: 13px 28px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.admin-page .logout-btn:hover {
+    background: #B98535;
+}
+
+.admin-page .dashboard-container {
+    width: 92%;
+    max-width: 1450px;
+    margin: 35px auto;
+    padding: 0;
+}
+
+.admin-page .dashboard-heading {
+    text-align: center;
+    margin: 35px 0;
+}
+
+.admin-page .dashboard-heading h1 {
+    color: white;
+    text-align: center;
+    font-size: 36px;
+    margin: 0 0 12px;
+}
+
+.admin-page .dashboard-heading p {
+    color: white;
+    text-align: center;
+    font-size: 18px;
+    margin: 0;
+    padding: 0;
+    background: transparent;
+}
+
+.admin-page .dashboard-card {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.96);
+    padding: 30px;
+    margin: 0 0 28px;
+    border-radius: 16px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.16);
+}
+
+.admin-page .dashboard-card h2 {
+    color: #174C3C;
+    text-align: left;
+    font-size: 25px;
+    margin: 0 0 22px;
+}
+.admin-page .admin-welcome {
+    display: flex;
+    align-items: center;
+    gap: 22px;
+}
+
+.admin-page .welcome-icon {
+    font-size: 45px;
+    flex-shrink: 0;
+}
+
+.admin-page .welcome-text {
+    flex: 1;
+    min-width: 0;
+}
+
+.admin-page .welcome-text h2 {
+    margin: 0 0 12px;
+}
+
+.admin-page .welcome-text p {
+    color: #263B35;
+    background: #EAF3EF;
+    padding: 15px;
+    margin: 0;
+    border-radius: 8px;
+}
+
+.admin-page .admin-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 22px;
+}
+
+.admin-page a.admin-feature {
+    min-width: 0;
+    min-height: 205px;
+    padding: 25px 18px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    background: #F8FBF9;
+    border: 1px solid #D5E7DE;
+    border-radius: 13px;
+
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+
+    transition: 0.25s ease;
+}
+
+.admin-page a.admin-feature:hover {
+    transform: translateY(-5px);
+    background: #EAF3EF;
+    border-color: #287764;
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);
+}
+
+.admin-page .feature-icon {
+    font-size: 40px;
+    margin-bottom: 12px;
+}
+
+.admin-page .admin-feature h3 {
+    color: #174C3C;
+    font-size: 19px;
+    margin: 5px 0 12px;
+}
+
+.admin-page .admin-feature p {
+    color: #555;
+    background: #F5F1E8;
+    padding: 11px 14px;
+    border-radius: 7px;
+    margin: 0;
+    line-height: 1.5;
+    text-align: center;
+}
+
+.admin-page .feature-link {
+    display: none;
+}
+
+.admin-page .admin-footer {
+    text-align: center;
+    padding: 5px 0 20px;
+}
+
+.admin-page .admin-footer p {
+    color: white;
+    background: transparent;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+}
+
+.admin-subpage {
+    width: 90%;
+    max-width: 1100px;
+    margin: 50px auto;
+    padding: 30px;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.12);
+}
+
+.admin-subpage h1 {
+    color: #174C3C;
+    text-align: left;
+}
+
+.admin-subpage p {
+    color: #444;
+    text-align: left;
+}
+
+.back-dashboard {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 12px 22px;
+    background: #174C3C;
+    color: white;
+    text-decoration: none;
+    border-radius: 7px;
+}
+
+.back-dashboard:hover {
+    background: #C99B55;
+}
+
+@media (max-width: 900px) {
+
+    .admin-page .admin-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+}
+@media (max-width: 768px) {
+
+    body {
+        padding: 20px;
+    }
+
+    .owner-layout {
+        flex-direction: column;
+    }
+
+    .dashboard-sidebar {
+        width: 100%;
+        min-width: 0;
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+
+    .sidebar-link {
+        flex: 1 1 130px;
+    }
+
+    .owner-main .dashboard-container {
+        width: 100%;
+        padding: 15px;
+    }
+
+    .dashboard-navbar {
+        padding: 15px 20px;
+    }
+
+    .navbar-logo {
+        font-size: 18px;
+    }
+
+    .menu-container {
+        right: 12px;
+    }
+
+    .owner-content {
+        width: 94%;
+    }
+
+    .owner-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+    }
+
+    .owner-card {
+        min-height: 120px;
+    }
+
+    .owner-banner {
+        min-height: 160px;
+    }
+
+    body.tenant-dashboard {
+        background-attachment: scroll;
+    }
+
+    .admin-page .dashboard-heading h1 {
+        font-size: 29px;
+    }
+
+    .admin-page .dashboard-container {
+        width: 94%;
+    }
+
+}
+
+@media (max-width: 480px) {
+
+    .owner-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .admin-page .admin-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .admin-page .navbar-inner {
+        width: 94%;
+    }
+
+    .admin-page .admin-brand {
+        gap: 6px;
+    }
+
+    .admin-page .admin-brand span {
+        font-size: 23px;
+    }
+
+    .admin-page .admin-brand h2 {
+        font-size: 18px;
+    }
+
+    .admin-page .logout-btn {
+        padding: 10px 15px;
+        font-size: 14px;
+    }
+
+    .admin-page .dashboard-heading h1 {
+        font-size: 25px;
+    }
+
+    .admin-page .dashboard-heading p {
+        font-size: 15px;
+    }
+
+    .admin-page .dashboard-card {
+        padding: 20px;
+    }
+
+    .admin-page .admin-welcome {
+        gap: 12px;
+    }
+
+    .admin-page .welcome-icon {
+        font-size: 32px;
+    }
+
+    .admin-page a.admin-feature {
+        min-height: 175px;
+    }
+
+    .admin-subpage {
+        width: 94%;
+        padding: 20px;
+    }
+
+}
+
+body.dashboard-page .owner-content .owner-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 22px;
+    width: 100%;
+}
+
+@media (max-width: 768px) {
+
+    body.dashboard-page .owner-content .owner-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+}
+
+@media (max-width: 400px) {
+
+    body.dashboard-page .owner-content .owner-grid {
+        grid-template-columns: 1fr;
+    }
+
+}

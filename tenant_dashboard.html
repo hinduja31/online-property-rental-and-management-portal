@@ -1,0 +1,397 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>🏡Tenant Dashboard</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: "Segoe UI", Arial, sans-serif;
+            color: #174C3C;
+
+            background-image:
+                linear-gradient(
+                    rgba(0, 0, 0, 0.25),
+                    rgba(0, 0, 0, 0.25)
+                ),
+                url("https://i.pinimg.com/236x/01/45/eb/0145eb418e7795f352328e9780b8bdc3.jpg?nii=t");
+
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+
+        .dashboard-navbar {
+            width: 100%;
+            height: 65px;
+            background: rgba(23, 76, 60, 0.96);
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            position: relative;
+            padding: 0 20px;
+            z-index: 100;
+        }
+
+        .dashboard-navbar h2 {
+            margin: 0;
+            color: white;
+            font-size: 23px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .menu-container {
+            position: absolute;
+            right: 25px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .menu-button {
+            width: auto;
+            border: none;
+            background: transparent;
+            color: white;
+            font-size: 30px;
+            cursor: pointer;
+            padding: 4px 8px;
+        }
+
+        .menu-button:hover {
+            background: transparent;
+            color: #C99B55;
+        }
+
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 45px;
+            right: 0;
+            width: 190px;
+
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+
+            overflow: hidden;
+            z-index: 1000;
+        }
+
+        .dropdown-menu.show {
+            display: block;
+        }
+
+        .dropdown-menu a {
+            display: block;
+            padding: 13px 16px;
+            color: #174C3C;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .dropdown-menu a:hover {
+            background: #F5F1E8;
+        }
+
+        .dashboard-container {
+            width: 90%;
+            max-width: 1100px;
+            margin: 35px auto;
+            padding-bottom: 30px;
+        }
+
+        .welcome-section {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 22px;
+            background: rgba(23, 76, 60, 0.82);
+            border-radius: 12px;
+            backdrop-filter: blur(5px);
+        }
+
+        .welcome-section h1 {
+            font-size: 27px;
+            margin: 0 0 10px;
+            color: white;
+        }
+
+        .welcome-section p {
+            color: white;
+            margin: 0;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 22px;
+        }
+
+        .dashboard-card {
+            min-height: 150px;
+
+            background: rgba(255, 255, 255, 0.88);
+            backdrop-filter: blur(7px);
+            -webkit-backdrop-filter: blur(7px);
+
+            border: 1px solid rgba(255, 255, 255, 0.75);
+            border-radius: 12px;
+
+            padding: 25px 20px;
+
+            box-shadow: 0 3px 12px rgba(0,0,0,0.12);
+
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+
+            text-align: center;
+            text-decoration: none;
+            color: #174C3C;
+
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .dashboard-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.97);
+            box-shadow: 0 6px 18px rgba(0,0,0,0.2);
+        }
+
+        .card-icon {
+            font-size: 36px;
+            margin-bottom: 12px;
+        }
+
+        .dashboard-card h3 {
+            margin: 0;
+            font-size: 18px;
+            color: #174C3C;
+        }
+
+        .dashboard-card p {
+            margin: 8px 0 0;
+            color: #555;
+            font-size: 14px;
+        }
+
+        @media (max-width: 650px) {
+
+            body {
+                background-attachment: scroll;
+            }
+
+            .dashboard-container {
+                width: 92%;
+                margin: 22px auto;
+            }
+
+            .dashboard-navbar h2 {
+                font-size: 19px;
+            }
+
+            .menu-container {
+                right: 10px;
+            }
+
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+
+            .dashboard-card {
+                min-height: 125px;
+            }
+
+            .welcome-section h1 {
+                font-size: 23px;
+            }
+        }
+    </style>
+</head>
+
+<body class="tenant-dashboard">
+
+    <div class="dashboard-navbar">
+
+        <h2>🏡 Property Connect</h2>
+
+        <div class="menu-container">
+
+            <button type="button"
+                    class="menu-button"
+                    id="menuButton"
+                    aria-label="Open menu"
+                    aria-expanded="false">
+                ☰
+            </button>
+
+            <div class="dropdown-menu" id="dropdownMenu">
+
+                <a href="{{ url_for('dashboard') }}">
+                    🏠 Dashboard
+                </a>
+
+                <a href="{{ url_for('profile') }}">
+                    👤 My Profile
+                </a>
+
+                <a href="{{ url_for('logout') }}">
+                    🚪 Logout
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <main class="dashboard-container">
+
+        <div class="welcome-section">
+
+            <h1>Welcome, {{ user['name'] }}!</h1>
+
+            <p>
+                Manage your rental activities from here.
+            </p>
+
+        </div>
+
+        <div class="dashboard-grid">
+
+
+            <a href="{{ url_for('view_properties') }}"
+               class="dashboard-card">
+
+                <span class="card-icon">🏠</span>
+
+                <h3>View Properties</h3>
+
+                <p>Find your suitable rental home</p>
+
+            </a>
+
+            <a href="{{ url_for('tenant_section', section='applications') }}"
+               class="dashboard-card">
+
+                <span class="card-icon">📋</span>
+
+                <h3>My Applications</h3>
+
+                <p>Check your application status</p>
+
+            </a>
+
+
+            <a href="{{ url_for('tenant_section', section='payments') }}"
+               class="dashboard-card">
+
+                <span class="card-icon">💳</span>
+
+                <h3>Rent Payment History</h3>
+
+                <p>View your rent payment records</p>
+
+            </a>
+
+
+            <a href="{{ url_for('tenant_section', section='complaints') }}"
+               class="dashboard-card">
+
+                <span class="card-icon">🛠️</span>
+
+                <h3>Maintenance Complaints</h3>
+
+                <p>View your submitted complaints</p>
+
+            </a>
+
+            <a href="{{ url_for('tenant_section', section='lease') }}"
+               class="dashboard-card">
+
+                <span class="card-icon">📄</span>
+
+                <h3>My Lease</h3>
+
+                <p>View your rental agreement details</p>
+
+            </a>
+
+            <a href="{{ url_for('tenant_section', section='maintenance') }}"
+               class="dashboard-card">
+
+                <span class="card-icon">🔧</span>
+
+                <h3>Maintenance Requests</h3>
+
+                <p>Track maintenance request status</p>
+
+            </a>
+
+        </div>
+
+    </main>
+
+    <script>
+
+        const menuButton =
+            document.getElementById("menuButton");
+
+        const dropdownMenu =
+            document.getElementById("dropdownMenu");
+
+        menuButton.addEventListener("click", function(event) {
+
+            event.stopPropagation();
+
+            dropdownMenu.classList.toggle("show");
+
+            const isOpen =
+                dropdownMenu.classList.contains("show");
+
+            menuButton.setAttribute(
+                "aria-expanded",
+                isOpen
+            );
+
+        });
+
+        document.addEventListener("click", function(event) {
+
+            if (
+                !dropdownMenu.contains(event.target) &&
+                !menuButton.contains(event.target)
+            ) {
+
+                dropdownMenu.classList.remove("show");
+
+                menuButton.setAttribute(
+                    "aria-expanded",
+                    "false"
+                );
+
+            }
+
+        });
+
+    </script>
+
+</body>
+</html>

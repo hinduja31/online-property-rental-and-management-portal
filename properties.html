@@ -1,0 +1,783 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🏡View Properties</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: "Segoe UI", Arial, sans-serif;
+            color: #174C3C;
+            background: #F5F1E8;
+        }
+
+        .navbar {
+            height: 65px;
+            width: 100%;
+            background: #174C3C;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            padding: 0 20px;
+            z-index: 100;
+        }
+
+        .navbar h2 {
+            color: white;
+            margin: 0;
+            font-size: 23px;
+            font-weight: bold;
+        }
+
+        .menu-container {
+            position: absolute;
+            right: 25px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .menu-button {
+            border: none;
+            background: transparent;
+            color: white;
+            font-size: 30px;
+            cursor: pointer;
+            padding: 4px 8px;
+        }
+
+        .menu-button:hover {
+            color: #C99B55;
+        }
+
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 45px;
+            right: 0;
+            width: 190px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            overflow: hidden;
+            z-index: 1000;
+        }
+
+        .dropdown-menu.show {
+            display: block;
+        }
+
+        .dropdown-menu a {
+            display: block;
+            padding: 13px 16px;
+            color: #174C3C;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .dropdown-menu a:hover {
+            background: #F5F1E8;
+        }
+
+        .container {
+            width: 92%;
+            max-width: 1250px;
+            margin: 35px auto;
+        }
+
+        .page-heading {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .page-heading h1 {
+            color: #174C3C;
+            margin-bottom: 8px;
+            font-size: 28px;
+        }
+
+        .page-heading p {
+            color: #555;
+            margin: 0;
+        }
+
+        .search-form {
+            width: 100%;
+            max-width: 1050px;
+            margin: 0 auto 28px;
+            background: white;
+            padding: 28px 30px;
+            border-radius: 14px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.10);
+            display: grid;
+            grid-template-columns: 1.25fr 1.1fr 1fr 1fr;
+            gap: 22px;
+            align-items: end;
+        }
+
+        .search-field {
+            min-width: 0;
+        }
+
+        .search-field label {
+            display: block;
+            min-height: 38px;
+            font-size: 15px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #174C3C;
+            text-align: center;
+        }
+
+        .search-field input,
+        .search-field select {
+            display: block;
+            width: 100%;
+            min-width: 0;
+            height: 50px;
+            padding: 12px 14px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 15px;
+            background: white;
+            color: #333;
+        }
+
+        .search-field input:focus,
+        .search-field select:focus {
+            outline: none;
+            border-color: #174C3C;
+            box-shadow: 0 0 0 2px rgba(23,76,60,0.12);
+        }
+
+        .search-actions {
+            grid-column: 1 / -1;
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+            margin-top: 8px;
+        }
+
+        .search-button,
+        .reset-button {
+            min-height: 50px;
+            min-width: 155px;
+            padding: 13px 22px;
+            border-radius: 8px;
+            text-align: center;
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .search-button {
+            border: none;
+            background: #174C3C;
+            color: white;
+        }
+
+        .search-button:hover {
+            background: #236B52;
+        }
+
+        .reset-button {
+            background: #F5F1E8;
+            color: #174C3C;
+            border: 1px solid #174C3C;
+        }
+
+        .reset-button:hover {
+            background: #e9e3d7;
+        }
+
+        .result-count {
+            color: #555;
+            font-size: 15px;
+            margin: 0 auto 18px;
+            max-width: 1050px;
+        }
+
+        .result-count strong {
+            color: #174C3C;
+        }
+
+        .property-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 25px;
+        }
+
+        .property-card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.12);
+            border: 1px solid #e5e5e5;
+            transition: transform 0.2s;
+            min-width: 0;
+        }
+
+        .property-card:hover {
+            transform: translateY(-4px);
+        }
+
+        .property-card h2 {
+            color: #174C3C;
+            margin-top: 0;
+            margin-bottom: 12px;
+            font-size: 21px;
+            text-align: center;
+        }
+
+        .property-info {
+            margin: 10px 0;
+            color: #444;
+            line-height: 1.6;
+            font-size: 15px;
+        }
+
+        .rent {
+            color: #174C3C;
+            font-size: 22px;
+            font-weight: bold;
+            margin: 15px 0;
+        }
+
+        .owner-name {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        /* PROPERTY IMAGES */
+
+        .property-images {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 10px;
+            margin: 12px 0 18px;
+        }
+
+        .property-image {
+            display: block;
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 8px;
+            background: #F5F1E8;
+            cursor: zoom-in;
+        }
+
+        .property-image:hover {
+            opacity: 0.9;
+        }
+
+        /* FULL IMAGE POPUP */
+
+        .image-modal {
+            display: none;
+            position: fixed;
+            z-index: 5000;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.92);
+            align-items: center;
+            justify-content: center;
+            padding: 55px 20px 20px;
+        }
+
+        .image-modal.show {
+            display: flex;
+        }
+
+        .modal-image {
+            max-width: 95%;
+            max-height: 90vh;
+            width: auto;
+            height: auto;
+            object-fit: contain;
+            border-radius: 6px;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 12px;
+            right: 25px;
+            color: white;
+            font-size: 42px;
+            font-weight: bold;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            line-height: 1;
+        }
+
+        .modal-close:hover {
+            color: #C99B55;
+        }
+
+        .apply-form {
+            margin-top: 18px;
+            border-top: 1px solid #ddd;
+            padding-top: 18px;
+        }
+
+        .apply-form label {
+            display: block;
+            margin-bottom: 7px;
+            font-weight: bold;
+        }
+
+        .apply-form textarea {
+            width: 100%;
+            min-height: 75px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 7px;
+            resize: vertical;
+            font-family: inherit;
+            font-size: 14px;
+            margin-bottom: 12px;
+        }
+
+        .apply-button {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 7px;
+            background: #174C3C;
+            color: white;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .apply-button:hover {
+            background: #236B52;
+        }
+
+        .empty-message {
+            background: white;
+            padding: 35px;
+            text-align: center;
+            border-radius: 10px;
+            color: #666;
+            grid-column: 1 / -1;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.1);
+        }
+
+        .empty-message h2 {
+            color: #174C3C;
+        }
+
+        .flash-message {
+            padding: 12px;
+            margin-bottom: 15px;
+            border-radius: 7px;
+            background: #fff3cd;
+            color: #664d03;
+            text-align: center;
+        }
+
+        @media (max-width: 900px) {
+            .search-form {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 20px;
+            }
+
+            .property-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                width: 92%;
+                margin: 22px auto;
+            }
+
+            .navbar h2 {
+                font-size: 19px;
+            }
+
+            .menu-container {
+                right: 10px;
+            }
+
+            .search-form {
+                grid-template-columns: 1fr;
+                padding: 20px;
+                gap: 16px;
+            }
+
+            .search-field label {
+                min-height: auto;
+                text-align: left;
+            }
+
+            .search-actions {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .search-button,
+            .reset-button {
+                width: 100%;
+            }
+
+            .property-grid {
+                grid-template-columns: 1fr;
+                gap: 18px;
+            }
+
+            .property-card {
+                padding: 20px;
+            }
+
+            .property-image {
+                height: 160px;
+            }
+
+            .page-heading h1 {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="navbar">
+        <h2>🏡 Property Connect</h2>
+
+        <div class="menu-container">
+            <button type="button"
+                    class="menu-button"
+                    id="menuButton"
+                    aria-label="Open menu"
+                    aria-expanded="false">
+                ☰
+            </button>
+
+            <div class="dropdown-menu" id="dropdownMenu">
+                <a href="{{ url_for('dashboard') }}">🏠 Dashboard</a>
+                <a href="{{ url_for('profile') }}">👤 My Profile</a>
+                <a href="{{ url_for('logout') }}">🚪 Logout</a>
+            </div>
+        </div>
+    </div>
+
+    <main class="container">
+
+        <div class="page-heading">
+            <h1>Available Properties</h1>
+            <p>Find your suitable rental home</p>
+        </div>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% for category, message in messages %}
+                <div class="flash-message">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endwith %}
+
+
+        <form class="search-form"
+              method="GET"
+              action="{{ url_for('view_properties') }}">
+
+            <div class="search-field">
+                <label for="location">📍 Location</label>
+                <input type="text"
+                       id="location"
+                       name="location"
+                       placeholder="Enter location"
+                       value="{{ location }}"
+                       autocomplete="off"
+                       spellcheck="false">
+            </div>
+
+            <div class="search-field">
+                <label for="property_type">🏠 Property Type</label>
+                <select id="property_type" name="property_type">
+                    <option value="">All Types</option>
+
+                    {% for item in property_types %}
+                        <option value="{{ item['property_type'] }}"
+                            {% if selected_type == item['property_type'] %}selected{% endif %}>
+                            {{ item['property_type'] }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="search-field">
+                <label for="min_rent">Minimum Rent (₹)</label>
+                <input type="number"
+                       id="min_rent"
+                       name="min_rent"
+                       min="0"
+                       step="any"
+                       placeholder="Minimum rent"
+                       value="{{ min_rent }}">
+            </div>
+
+            <div class="search-field">
+                <label for="max_rent">Maximum Rent (₹)</label>
+                <input type="number"
+                       id="max_rent"
+                       name="max_rent"
+                       min="0"
+                       step="any"
+                       placeholder="Maximum rent"
+                       value="{{ max_rent }}">
+            </div>
+
+            <div class="search-actions">
+                <button type="submit" class="search-button">
+                    🔍 Search Properties
+                </button>
+
+                <a href="{{ url_for('view_properties') }}"
+                   class="reset-button">
+                    Reset Filters
+                </a>
+            </div>
+        </form>
+
+
+        <div class="result-count">
+            Showing
+            <strong>{{ properties|length }}</strong>
+            matching propert{% if properties|length == 1 %}y{% else %}ies{% endif %}
+        </div>
+
+        <div class="property-grid">
+
+            {% if properties %}
+
+                {% for property in properties %}
+
+                    <div class="property-card">
+
+                        <h2>{{ property['title'] }}</h2>
+
+
+                        {% if property['images'] %}
+
+                            <div class="property-images">
+
+                                {% for image in property['images'] %}
+
+                                    <img
+                                        src="{{ url_for('static', filename='uploads/properties/' ~ image) }}"
+                                        alt="Photo of {{ property['title'] }}"
+                                        class="property-image"
+                                        loading="lazy"
+                                        onclick="openImage(this.src, this.alt)"
+                                        onerror="this.style.display='none';">
+
+                                {% endfor %}
+
+                            </div>
+
+                        {% endif %}
+
+                        <div class="property-info">
+                            <strong>📍 Location:</strong>
+                            {{ property['location'] }}
+                        </div>
+
+                        <div class="property-info">
+                            <strong>🏠 Property Type:</strong>
+                            {{ property['property_type'] }}
+                        </div>
+
+                        <div class="property-info">
+                            <strong>🛏 Bedrooms:</strong>
+                            {{ property['bedrooms'] or 0 }}
+                        </div>
+
+                        <div class="property-info">
+                            <strong>Description:</strong><br>
+                            {{ property['description'] or 'No description available.' }}
+                        </div>
+
+                        <div class="rent">
+                            ₹ {{ "%.2f"|format(property['rent']) }} / month
+                        </div>
+
+                        <div class="owner-name">
+                            <strong>Property Owner:</strong>
+                            {{ property['owner_name'] }}
+                        </div>
+
+                        <form class="apply-form"
+                              method="POST"
+                              action="{{ url_for('apply_property', property_id=property['id']) }}">
+
+                            <label for="message-{{ property['id'] }}">
+                                Application Message
+                            </label>
+
+                            <textarea
+                                id="message-{{ property['id'] }}"
+                                name="message"
+                                placeholder="Write a message to the property owner (optional)..."></textarea>
+
+                            <button type="submit" class="apply-button">
+                                Apply Now
+                            </button>
+
+                        </form>
+
+                    </div>
+
+                {% endfor %}
+
+            {% else %}
+
+                <div class="empty-message">
+
+                    {% if location or selected_type or min_rent or max_rent %}
+
+                        <h2>No Matching Properties Found</h2>
+
+                        <p>
+                            Your search filters-ku match aagura properties illa.
+                            Filters change pannitu try pannunga.
+                        </p>
+
+                        <a href="{{ url_for('view_properties') }}"
+                           class="reset-button">
+                            Clear Filters
+                        </a>
+
+                    {% else %}
+
+                        <h2>No Properties Available</h2>
+
+                        <p>
+                            Currently there are no rental properties available.
+                            Please check again later.
+                        </p>
+
+                    {% endif %}
+
+                </div>
+
+            {% endif %}
+
+        </div>
+
+    </main>
+    <div class="image-modal"
+         id="imageModal"
+         onclick="closeImage()">
+
+        <button type="button"
+                class="modal-close"
+                aria-label="Close image"
+                onclick="event.stopPropagation(); closeImage();">
+            &times;
+        </button>
+
+        <img id="modalImage"
+             class="modal-image"
+             src=""
+             alt="Full property image"
+             onclick="event.stopPropagation();">
+
+    </div>
+
+    <script>
+        const menuButton = document.getElementById("menuButton");
+        const dropdownMenu = document.getElementById("dropdownMenu");
+
+        menuButton.addEventListener("click", function(event) {
+
+            event.stopPropagation();
+
+            dropdownMenu.classList.toggle("show");
+
+            const isOpen = dropdownMenu.classList.contains("show");
+
+            menuButton.setAttribute("aria-expanded", isOpen);
+
+        });
+
+        document.addEventListener("click", function(event) {
+
+            if (
+                !dropdownMenu.contains(event.target) &&
+                !menuButton.contains(event.target)
+            ) {
+
+                dropdownMenu.classList.remove("show");
+
+                menuButton.setAttribute("aria-expanded", "false");
+
+            }
+
+        });
+
+
+        function openImage(imageSrc, imageAlt) {
+
+            const modal = document.getElementById("imageModal");
+            const modalImage = document.getElementById("modalImage");
+
+            modalImage.src = imageSrc;
+            modalImage.alt = imageAlt;
+
+            modal.classList.add("show");
+
+            document.body.style.overflow = "hidden";
+
+        }
+
+
+        function closeImage() {
+
+            const modal = document.getElementById("imageModal");
+            const modalImage = document.getElementById("modalImage");
+
+            modal.classList.remove("show");
+
+            modalImage.src = "";
+
+            document.body.style.overflow = "";
+
+        }
+
+
+        document.addEventListener("keydown", function(event) {
+
+            if (event.key === "Escape") {
+                closeImage();
+            }
+
+        });
+
+    </script>
+
+</body>
+</html>
