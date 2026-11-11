@@ -181,6 +181,3 @@ Conclusion
 
 This project helped me understand how a web-based rental management system can be developed using Python Flask and SQLite. It brings the main activities of property owners and tenants together in one application and makes rental management more organized and convenient.
 
-## Author
-
-Developed as an academic project.
